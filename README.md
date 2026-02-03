@@ -1,318 +1,154 @@
-# Ethiopia-fi-forecast
-📌 Project Overview
+#Ethiopia Financial Inclusion Forecasting
+Overview
 
-This project builds a data-driven system to analyze and forecast financial inclusion in Ethiopia, focusing on two Global Findex dimensions:
+This project tracks and forecasts Ethiopia’s financial inclusion progress, focusing on two core Global Findex indicators:
 
-Access – Account Ownership Rate
+Account Ownership (Access) – Share of adults with a financial account or mobile money.
 
-Usage – Digital Payment Adoption Rate
+Digital Payment Usage (Usage) – Share of adults making or receiving digital payments.
 
-The work is structured into sequential tasks, where each task builds directly on the outputs of the previous one.
-This README documents Task 1 (Data Exploration & Enrichment) and Task 2 (Exploratory Data Analysis).
+The system provides insights into historical trends, event-driven impacts, and projections for 2025–2027, helping stakeholders make informed decisions on policies, product launches, and infrastructure development.
 
-🧩 Task 1: Data Exploration and Enrichment
-🎯 Objective
+Project Structure
+ethiopia-fi-forecast/
+├── data/
+│   ├── raw/                  # Original datasets
+│   │   ├── ethiopia_fi_unified_data.csv
+│   │   └── reference_codes.csv
+│   └── processed/            # Cleaned and enriched datasets
+│       └── forecasts.csv
+├── notebooks/                # EDA, impact modeling, forecasting
+├── src/                      # Reusable scripts (data loading, processing)
+├── dashboard/
+│   └── app.py                # Streamlit dashboard
+├── reports/                  # Figures and summaries
+├── tests/                    # Unit tests
+├── requirements.txt
+└── README.md
 
-To understand the starter dataset, validate its structure, and enrich it with additional data that improves the ability to forecast financial inclusion outcomes in Ethiopia.
+Tasks
+Task 1 – Data Exploration & Enrichment
 
-Task 1 establishes a clean, reliable, and auditable data foundation for all downstream modeling and forecasting.
+Objective: Understand the starter dataset and enrich it with additional observations, events, and impact links.
 
-📂 Data Sources
-Starter Dataset
+Actions Taken:
 
-Located in:
+Explored ethiopia_fi_unified_data.csv and impact_links.
 
-data/raw/
+Validated records by record_type, pillar, indicator_code, confidence.
 
+Enriched dataset with additional infrastructure, policy, and market events.
 
-Files used:
+Logged sources, confidence levels, and collection notes in data_enrichment_log.md.
 
-ethiopia_fi_unified_data.csv
+Outcome:
+A clean, enriched dataset ready for analysis and modeling.
 
-reference_codes.csv
+Task 2 – Exploratory Data Analysis (EDA)
 
-The unified dataset follows a single schema where the meaning of each row depends on the record_type field.
+Objective: Analyze patterns, gaps, and key factors influencing financial inclusion.
 
-🧱 Dataset Schema Understanding
-Record Types
-record_type	Description
-observation	Measured values from surveys, reports, and operators
-event	Policies, product launches, infrastructure milestones
-target	Official policy goals (e.g., NFIS targets)
-Key Design Principle
+Actions Taken:
 
-Events are NOT assigned pillars (Access / Usage)
+Summarized data by record_type, pillar, and source_type.
 
-Event effects are modeled separately using impact_links
+Visualized temporal coverage for all indicators.
 
-This avoids bias and double counting
+Analyzed trends in account ownership and digital payment usage (2011–2024).
 
-🔗 Impact Links
+Explored gender and urban/rural disparities.
 
-Stored as a separate logical dataset
+Investigated 2021–2024 slowdown in account ownership growth.
 
-Connect events → indicators
+Mapped events on indicator trends to identify potential influences.
 
-Include:
+Assessed data quality and gaps.
 
-Impact direction
+Outcome:
+EDA notebook highlighting trends, correlations, and five key insights into Ethiopia’s financial inclusion dynamics.
 
-Magnitude
+Task 3 – Event Impact Modeling
 
-Lag (months)
+Objective: Quantify how events (policies, product launches, infrastructure) affect inclusion indicators.
 
-Evidence basis
+Actions Taken:
 
-This separation allows flexible modeling in later tasks.
+Merged events with impact links to create an event-indicator matrix.
 
-🔍 Exploratory Checks Performed
+Calculated directional and magnitude impacts over time.
 
-Record counts by:
+Validated model estimates against historical outcomes (e.g., Telebirr, M-Pesa launches).
 
-record_type
+Documented assumptions, limitations, and uncertainties.
 
-pillar
+Outcome:
+A robust model that translates events into expected changes in access and usage metrics.
 
-source_type
+Task 4 – Forecasting Access and Usage
 
-confidence
+Objective: Forecast 2025–2027 values for account ownership and digital payment usage.
 
-Temporal coverage of observations
+Approach:
 
-Unique indicators and data availability
+Trend regression with event-augmented adjustments.
 
-Event inventory and event dates
+Scenario analysis: Optimistic, Base, Pessimistic.
 
-Review of existing impact relationships
+Quantified uncertainty using confidence intervals.
 
-➕ Data Enrichment
+Results:
 
-To improve forecasting quality, the dataset was enriched with:
+Consolidated forecasts in forecasts.csv.
 
-Additional Observations
+Account ownership expected to rise gradually; digital payment usage projected to grow faster.
 
-Examples:
+Event-driven effects (e.g., new infrastructure, policy changes) incorporated.
 
-Smartphone penetration
+Outcome:
+Structured dataset for dashboard integration and downstream visualization.
 
-Mobile broadband coverage
+Task 5 – Dashboard Development
 
-Agent density
+Objective: Enable stakeholders to interactively explore historical trends, event impacts, and forecasts.
 
-Gender-disaggregated indicators (where available)
+Implementation:
 
-These variables act as leading indicators and enablers for digital financial inclusion.
+Streamlit-based dashboard (dashboard/app.py) with four main sections:
 
-Additional Events
+Overview – Key metrics, P2P/ATM crossover ratio, growth highlights.
 
-Examples:
+Trends – Time-series plots, date range selector, channel comparisons.
 
-Interoperable payment infrastructure rollout
+Forecasts – Scenario-based projections with confidence intervals.
 
-Safaricom Ethiopia market entry
+Inclusion Projections – Progress toward 60% target, scenario selector.
 
-Digital ID expansion milestones
+Interactive visualizations with download functionality.
 
-All new events:
+Clear labels, guidance, and run instructions included.
 
-Have a category
+Outcome:
+A fully interactive tool for exploring Ethiopia’s financial inclusion landscape and scenario-based forecasts.
 
-Leave pillar empty (by design)
+Installation & Usage
+# Clone the repository
+git clone <repo_url>
+cd ethiopia-fi-forecast
 
-Additional Impact Links
+# Install dependencies
+pip install -r requirements.txt
 
-New modeled relationships were added to capture:
+# Run the dashboard
+streamlit run dashboard/app.py
 
-Infrastructure → Usage effects
+Key Insights
 
-Policy → Access effects
+Account ownership growth slowed 2021–2024 despite large mobile money uptake.
 
-Product launches → Usage acceleration (lagged)
+Digital payment usage is rising faster than account ownership.
 
-🧪 Validation & Robustness
+Event timing (product launches, policies) strongly influences trends.
 
-Basic validations were applied to ensure data integrity:
+Gender and urban/rural gaps persist.
 
-Valid record_type values only
-
-Events have no pillar assigned
-
-Observations contain numeric values
-
-Required fields are present
-
-No silent failures (errors are explicit)
-
-📝 Documentation & Audit Trail
-
-All additions are documented in:
-
-reports/data_enrichment_log.md
-
-
-For each new record, the log includes:
-
-Source URL
-
-Original quoted text
-
-Confidence assessment
-
-Collection date
-
-Rationale for inclusion
-
-This ensures transparency and reproducibility.
-
-📦 Outputs of Task 1
-
-Enriched dataset saved to:
-
-data/processed/ethiopia_fi_unified_data_enriched.csv
-
-
-Reusable data loading and validation logic
-
-Fully reproducible notebook execution
-
-Clean handoff to Task 2 (EDA)
-
-📈 Task 2: Exploratory Data Analysis (EDA)
-🎯 Objective
-
-To analyze the enriched dataset and understand patterns, drivers, gaps, and anomalies in Ethiopia’s financial inclusion trajectory.
-
-Task 2 transforms data into insight, preparing the ground for event impact modeling (Task 3).
-
-🔎 Dataset Overview Analysis
-
-The dataset was summarized by:
-
-record_type
-
-pillar
-
-source_type
-
-confidence
-
-Key Observations
-
-Observations dominate the dataset
-
-Events are fewer but strategically important
-
-Medium-confidence data is common → uncertainty acknowledged
-
-🕒 Temporal Coverage Analysis
-
-Visualized which indicators have data across which years
-
-Identified sparse coverage for:
-
-Global Findex indicators
-
-Gender and rural/urban splits
-
-📌 Implication:
-Pure time-series models are limited → hybrid and event-augmented approaches are needed.
-
-🔐 Access (Account Ownership) Analysis
-Findings
-
-Strong growth from 2011 to 2021
-
-Sharp slowdown from 2021 to 2024 (+3 percentage points)
-
-Growth Rate Analysis
-
-Calculated growth between survey years
-
-Confirmed structural deceleration post-2021
-
-Interpretation
-
-Despite massive mobile money expansion:
-
-Many accounts are dormant or secondary
-
-Mobile money often adds convenience, not new formal access
-
-Findex definition limits what counts as “access”
-
-💳 Usage (Digital Payments) Analysis
-Patterns Observed
-
-Rapid growth in registered mobile money accounts
-
-Slower growth in actual digital payment usage
-
-Key Insight
-
-A clear registered vs. active usage gap exists:
-
-Registration ≠ meaningful usage
-
-Usage depends on infrastructure, trust, and use cases
-
-🏗 Infrastructure & Enablers
-
-Analyzed indicators such as:
-
-Smartphone penetration
-
-Mobile broadband coverage
-
-Agent density
-
-ATM density
-
-Findings
-
-Infrastructure indicators correlate more strongly with Usage than Access
-
-Many act as leading indicators with lagged effects
-
-📅 Event Timeline Analysis
-
-Events were plotted on a timeline and visually compared against indicator trends.
-
-Key observations:
-
-Telebirr launch boosted mobile money usage, not account ownership
-
-Safaricom entry showed delayed effects
-
-M-Pesa entry increased competition, not immediate inclusion
-
-🔗 Correlation Analysis
-
-Correlation analysis revealed:
-
-Usage indicators are more tightly coupled with infrastructure
-
-Access indicators weaken in correlation after 2021
-
-This reinforces the need for event-based modeling.
-
-🧠 Key Insights (Summary)
-
-Financial inclusion growth in Ethiopia is slowing structurally, not temporarily.
-
-Mobile money expansion affects usage more than access.
-
-Infrastructure is a stronger predictor of usage than policy alone.
-
-Findex-defined access may understate real digital participation.
-
-Data sparsity limits pure statistical forecasting.
-
-⚠️ Data Quality & Limitations
-
-Sparse survey years (Global Findex every ~3 years)
-
-Mixed confidence levels across sources
-
-Operator data not always comparable to survey data
-
-Limited disaggregation (gender, rural/urban)
+Infrastructure expansion (mobile coverage, ATMs) is a key enabler.
